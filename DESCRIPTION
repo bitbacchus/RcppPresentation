@@ -1,0 +1,18 @@
+Package: RcppPresentation
+Title: Demo package Rcpp
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sebastian",
+           family = "Hanss",
+           role = c("aut", "cre"),
+           email = "shanss@gwdg.de")
+Description: This is a demo to show how I use R and C++ together.  
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp

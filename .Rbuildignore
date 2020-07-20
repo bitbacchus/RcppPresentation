@@ -1,0 +1,7 @@
+^LICENSE\.md$
+^benchmarks$
+^rcpp_dev$
+^slides$
+^README\.md$
+^.*\.Rproj$
+^\.Rproj\.user$

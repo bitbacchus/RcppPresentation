@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Integration of C++ code in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Sebastian Hanß" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Integration of <code>C++</code> code in <code>R</code>
+## with Rcpp
+### Sebastian Hanß
+### Virtual HackyHour Göttingen
+### 2020/07/21
+
+---
+
+class: inverse, center, middle
+
+# Ecological modeling 🤔
+
+---
+class: middle
+.center[![Competition for water](./pics/map2-5.png)]
+
+---
+class: middle
+.center[![Competition for water](./pics/map2-50.png)]
+
+---
+class: middle
+.center[![Competition for water](./pics/map2-500.png)]
+
+---
+class: middle
+.center[![Competition for water](./pics/map2-1000.png)]
+
+---
+class: middle
+.center[![Competition for water](./pics/map2-5000.png)]
+
+---
+class: middle
+.center[![Competition for water](./pics/fc.png)]
+
+---
+class: inverse, center, middle
+
+# `R` + `C++`
+
+---
+class: middle
+## `R`
+
+- interpreted scripting language
+- *from statisticians for statisticians*
+- especially popular in science
+
+---
+class: inverse, center, middle
+
+# `R` &amp; `C++`
+
+---
+class: middle
+## `R`
+
+- interpreted scripting language
+- *from statisticians for statisticians*
+- especially popular in science
+
+---
+## R in Ecology*
+.center[![Survey on programming litracy](./pics/Yomos_lang.png)]
+
+.left[
+   
+`*` mini-survey at the Young Modelers in Ecology Workshop 2020]
+
+---
+class: middle
+## `C++`
+
+- compiled language with very mature compilers
+- offers all control you'll ever need
+- modern `C++` even offers some convenience
+
+---
+class: inverse, center, middle
+
+# `R` + `C++` = ❤
+
+---
+class: middle
+## Motivation I
+### (the `R` perspective)
+
+--
+- performance.
+
+---
+## Typical bottlenecks in `R` that `C++` can address 
+
+--
+- **Loops** that can’t be easily vectorised because subsequent iterations
+depend on previous ones.
+
+--
+- **Recursive functions**, or problems which involve calling functions
+millions of times. The overhead of calling a function in C++ is much
+lower than in R.
+
+--
+- Problems that require **advanced data structures and algorithms** that R
+doesn’t provide. Through the standard template library (STL), C++
+has efficient implementations of many important data structures,
+from ordered maps to double-ended queues.
+
+--
+[copy’n’pasted from https://adv-r.hadley.nz/rcpp.html]
+
+---
+class: middle
+
+![Naive matrix multiplication benchmark](./pics/benchmark.png)
+
+---
+class: middle
+## Motivation II
+### (the `C++` perspective)
+
+--
+- workflow convenience 
+(pre- and post-processing of data is done in R anyway)
+- community usefulness 
+- (actual) reproducibility
+
+---
+class: inverse, center, middle
+# But... why does this work?!
+
+---
+class: middle
+## `R`
+- implemented in `C` (and `C++` is compatible with `C`)
+
+--
+- R’s API allows to access the underlying objects via C-Pointers
+(“SEXP”)
+
+--
+- dynamic libraries (.so or .dll) can be made available to `R `
+
+---
+class: middle
+## `Rcpp`
+`Rcpp` is a `C++` and convenience wrapper for the `R`’s API:
+
+--
+- `C`-Pointers become STL-like containers, e.g. `NumericVector`,
+`IntegerMatrix`
+
+--
+- `R`-objects, e.g. `List`, `DataFrame`
+
+--
+- Access to `R` functionality, i.e. important math and statistics functions
+from `R`
+
+--
+- Syntactic sugar for (some) `R` syntax in `C++`, e.g. `sample()`, is `na()`,
+`lapply()`
+
+---
+class: inverse, center, middle
+# But... why does this work?!
+## ... in practice?
+
+---
+class: middle
+## `Rcpp` - Single function
+
+```r
+library(Rcpp)
+
+cppFunction('int add(int x, int y, int z) {
+  int sum = x + y + z;
+  return sum;
+}')
+
+add(1, 2 ,3)
+# &gt; [1] 6
+```
+
+---
+class: middle
+## But, wait ... what just happened 🤔
+`Rcpp::cppFunction()` 
+
+--
+- (1) compiled and linked a new shared library for `R` (w our `C++` fun)
+
+--
+- (2) defined an `R` function that calls the `add()` function from the new library
+
+---
+class: middle
+## My stuff is more complex ...
+
+---
+class: middle
+## `C++` code in .cpp/.h files
+
+```c++
+// [[Rcpp::export]]
+int add(int x, int y, int z) 
+{
+    int sum = x + y + z;
+    return sum;
+}
+
+```
+
+---
+class: middle
+## `C++` code in .cpp/.h files
+```r
+library(Rcpp)
+
+sourceCpp(file = "src/add.cpp")
+
+&gt; add(1, 2, 3)
+[1] 6
+```
+
+---
+class: middle
+## Don't want to call `sourceCpp()` for each function?
+🡆 make an R 📦 package with Rcpp. It is not very complicated 😎
+
+---
+class: center, middle
+
+# Thanks!
+
+✉️ sebastian@hanss.info
+
+🐦 @Sebastian_Hanss
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
