@@ -1,3 +1,8 @@
+# Integration of C++ code in R with Rcpp
+
+[Virtual HackyHour Göttingen
+2020/07/21](https://pad.gwdg.de/HackyHourGoettingen_2020-07-21)
+
 ## What is the content of this talk? 
 
 R is one of the most popular programming languages in science, and well suited for all data and stats centered tasks. In my field, Ecology, R is *lingua franca*. For reproducible science and re-usability of code in Ecology, you should ideally share your work in R.
@@ -13,9 +18,12 @@ Rcpp integrates C++ code seamlessly into R. It is both, an R package and a C++ l
     - Rcpp intro in RStudio
     - How to use RInsde to develop Rcpp code in C++ IDEs (here: Qt Creator)
 
-## Links ##
+## Links
+- [Presentation Slides](https://bitbacchus.github.io/RcppPresentation/slides/rcpp_presentation.html)
 - [How to make an R-Package with Rcpp in RStudio](http://hanss.info/sebastian/post/setup-rcpp-package/)
 - [Setup Qt Creator to develop and debug Rcpp code](http://hanss.info/sebastian/post/rcpp-qtcreator/)
+
+### Useful Websites
 - [Rcpp for everyone](https://teuder.github.io/rcpp4everyone_en/)
 - [Rewriting R code in C++](https://adv-r.hadley.nz/rcpp.html)
 - [Rcpp attributes](https://cloud.r-project.org/web/packages/Rcpp/vignettes/Rcpp-attributes.pdf)
