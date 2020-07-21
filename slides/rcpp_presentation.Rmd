@@ -54,19 +54,6 @@ class: middle
 - especially popular in science
 
 ---
-class: inverse, center, middle
-
-# `R` & `C++`
-
----
-class: middle
-## `R`
-
-- interpreted scripting language
-- *from statisticians for statisticians*
-- especially popular in science
-
----
 ## R in Ecology*
 .center[![Survey on programming litracy](./pics/Yomos_lang.png)]
 
