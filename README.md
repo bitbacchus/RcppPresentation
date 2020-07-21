@@ -1,3 +1,7 @@
+  <!-- badges: start -->
+  [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/bitbacchus/RcppPresentation/master?urlpath=rstudio)
+  <!-- badges: end -->
+  
 # Integration of C++ code in R with Rcpp
 
 [Virtual HackyHour Göttingen

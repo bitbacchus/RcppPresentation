@@ -1,6 +1,6 @@
 library(tidyverse)
 
-matrix_sizes <- 11:60
+matrix_sizes <- 11:160
 
 benchmarks <- tibble(
   matrix_size = vector(mode = "integer"),
@@ -15,7 +15,7 @@ for (i in 1:length(matrix_sizes)) {
   x <- bench::mark(
     RcppPresentation::mat_mult_naive(mat, mat),
     RcppPresentation::mat_mult_naive_rcpp(mat, mat),
-    #mat %*% mat,
+    #mat %*% mat, # the built-in, proper matrix multiplication is order of magnitudes faster than any naive approach
     time_unit = "s"
   )
   
